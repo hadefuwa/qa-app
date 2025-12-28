@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Q&A - Choose Your Quiz!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0f0f23;
+            background-image: 
+                radial-gradient(at 40% 20%, rgba(120, 119, 198, 0.3) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, rgba(120, 119, 198, 0.3) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(120, 119, 198, 0.2) 0px, transparent 50%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+        
+        .header p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .difficulty-section {
+            margin-bottom: 60px;
+        }
+        
+        .difficulty-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .difficulty-header h2 {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .difficulty-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .difficulty-badge.easy {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+        }
+        
+        .difficulty-badge.medium {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+        }
+        
+        .difficulty-badge.hard {
+            background: linear-gradient(135deg, #d63031 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .quizzes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quiz-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+        
+        .quiz-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 
+                0 20px 60px rgba(102, 126, 234, 0.2),
+                0 0 0 1px rgba(102, 126, 234, 0.1);
+        }
+        
+        .quiz-card:hover::before {
+            opacity: 1;
+        }
+        
+        .quiz-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .quiz-emoji {
+            font-size: 4.5rem;
+            margin-bottom: 24px;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            transition: transform 0.4s ease;
+        }
+        
+        .quiz-card:hover .quiz-emoji {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .quiz-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        
+        .quiz-card p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+        
+        .quiz-stats {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin: 32px 0;
+            padding: 24px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .start-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 14px rgba(102, 126, 234, 0.4);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5);
+        }
+        
+        .start-btn:hover::before {
+            left: 100%;
+        }
+        
+        .start-btn::after {
+            content: '→';
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+        
+        .start-btn:hover::after {
+            transform: translateX(4px);
+        }
+        
+        .empty-section {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            
+            .header {
+                margin-bottom: 40px;
+            }
+            
+            .difficulty-section {
+                margin-bottom: 40px;
+            }
+            
+            .quizzes-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .quiz-card {
+                padding: 32px 24px;
+            }
+            
+            .quiz-emoji {
+                font-size: 3.5rem;
+            }
+            
+            .quiz-stats {
+                gap: 24px;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Kids Q&A</h1>
+            <p>Learn and have fun with interactive quizzes!</p>
+        </div>
+        
+        <!-- Easy Difficulty Section -->
+        <div class="difficulty-section">
+            <div class="difficulty-header">
+                <h2>Easy</h2>
+                <span class="difficulty-badge easy">Beginner Friendly</span>
+            </div>
+            <div class="quizzes-grid">
+                {% if quizzes_by_difficulty.easy %}
+                    {% for quiz_id, quiz in quizzes_by_difficulty.easy.items() %}
+                    <a href="/quiz/{{ quiz_id }}" class="quiz-card">
+                        <span class="quiz-emoji">{{ quiz.emoji }}</span>
+                        <h2>{{ quiz.name }}</h2>
+                        <p>{{ quiz.description }}</p>
+                        <div class="quiz-stats">
+                            <div class="stat">
+                                <div class="stat-number">{{ quiz.total_questions }}</div>
+                                <div class="stat-label">Questions</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">{{ quiz.sections|length }}</div>
+                                <div class="stat-label">Sections</div>
+                            </div>
+                        </div>
+                        <div class="start-btn">Start Quiz</div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-section">
+                        No easy quizzes available yet. Check back soon!
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Medium Difficulty Section -->
+        <div class="difficulty-section">
+            <div class="difficulty-header">
+                <h2>Medium</h2>
+                <span class="difficulty-badge medium">Intermediate Challenge</span>
+            </div>
+            <div class="quizzes-grid">
+                {% if quizzes_by_difficulty.medium %}
+                    {% for quiz_id, quiz in quizzes_by_difficulty.medium.items() %}
+                    <a href="/quiz/{{ quiz_id }}" class="quiz-card">
+                        <span class="quiz-emoji">{{ quiz.emoji }}</span>
+                        <h2>{{ quiz.name }}</h2>
+                        <p>{{ quiz.description }}</p>
+                        <div class="quiz-stats">
+                            <div class="stat">
+                                <div class="stat-number">{{ quiz.total_questions }}</div>
+                                <div class="stat-label">Questions</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">{{ quiz.sections|length }}</div>
+                                <div class="stat-label">Sections</div>
+                            </div>
+                        </div>
+                        <div class="start-btn">Start Quiz</div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-section">
+                        No medium quizzes available yet. Check back soon!
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Hard Difficulty Section -->
+        <div class="difficulty-section">
+            <div class="difficulty-header">
+                <h2>Hard</h2>
+                <span class="difficulty-badge hard">Expert Level</span>
+            </div>
+            <div class="quizzes-grid">
+                {% if quizzes_by_difficulty.hard %}
+                    {% for quiz_id, quiz in quizzes_by_difficulty.hard.items() %}
+                    <a href="/quiz/{{ quiz_id }}" class="quiz-card">
+                        <span class="quiz-emoji">{{ quiz.emoji }}</span>
+                        <h2>{{ quiz.name }}</h2>
+                        <p>{{ quiz.description }}</p>
+                        <div class="quiz-stats">
+                            <div class="stat">
+                                <div class="stat-number">{{ quiz.total_questions }}</div>
+                                <div class="stat-label">Questions</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">{{ quiz.sections|length }}</div>
+                                <div class="stat-label">Sections</div>
+                            </div>
+                        </div>
+                        <div class="start-btn">Start Quiz</div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-section">
+                        No hard quizzes available yet. Check back soon!
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

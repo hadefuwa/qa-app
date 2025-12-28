@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ section_title }} - Vikings Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        {% if quiz_id == 'viking-shields' %}
+        /* Dark mahogany/chestnut wood theme for Viking Shields */
+        :root {
+            --bg-dark-1: #1a0f08;
+            --bg-dark-2: #241510;
+            --bg-wood-1: #6b4423;
+            --bg-wood-2: #5c3820;
+            --bg-wood-3: #4d2e1a;
+            --border-wood: #3d2415;
+            --border-dark: #2d1a0f;
+            --text-dark: #2d1a0f;
+            --text-light: #d4a574;
+            --accent-1: #7b5433;
+            --accent-2: #6b4423;
+            --intro-bg: #c9a068;
+            --intro-border: #4d2e1a;
+        }
+        {% else %}
+        /* Lighter wood theme for Vikings */
+        :root {
+            --bg-dark-1: #3d2817;
+            --bg-dark-2: #4a2f1a;
+            --bg-wood-1: #d4a574;
+            --bg-wood-2: #c9a068;
+            --bg-wood-3: #b8956a;
+            --border-wood: #8b5a3c;
+            --border-dark: #6b4423;
+            --text-dark: #3d2817;
+            --text-light: #f4e4bc;
+            --accent-1: #8b5a3c;
+            --accent-2: #6b4423;
+            --intro-bg: #f4e4bc;
+            --intro-border: #8b5a3c;
+        }
+        {% endif %}
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    var(--bg-dark-1) 0px,
+                    var(--bg-dark-2) 2px,
+                    var(--bg-dark-1) 4px,
+                    var(--bg-dark-2) 6px
+                ),
+                linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
+            background-size: 8px 100%, 100% 100%;
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--bg-wood-1) 0px,
+                    var(--bg-wood-2) 1px,
+                    var(--bg-wood-1) 2px,
+                    var(--bg-wood-2) 3px,
+                    var(--bg-wood-1) 4px
+                ),
+                linear-gradient(135deg, var(--bg-wood-1) 0%, var(--bg-wood-3) 100%);
+            background-size: 100% 4px, 100% 100%;
+            border: 8px solid var(--border-wood);
+            border-radius: 0;
+            padding: 30px;
+            box-shadow: 
+                0 0 0 4px var(--border-dark),
+                0 0 0 8px var(--border-wood),
+                0 20px 60px rgba(0,0,0,0.8),
+                inset 0 2px 10px rgba(255,255,255,0.1);
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    rgba(139, 90, 60, 0.1) 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .nav-btn {
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    var(--border-dark) 0px,
+                    var(--accent-1) 1px,
+                    var(--border-dark) 2px
+                ),
+                linear-gradient(135deg, var(--border-wood) 0%, var(--border-dark) 100%);
+            background-size: 8px 8px, 100% 100%;
+            color: var(--text-light);
+            border: 4px solid var(--text-dark);
+            padding: 12px 20px;
+            font-size: 1em;
+            border-radius: 0;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.1),
+                0 4px 15px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.2),
+                0 6px 20px rgba(0,0,0,0.7);
+        }
+        
+        .nav-btn.secondary {
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    var(--accent-1) 0px,
+                    var(--accent-2) 1px,
+                    var(--accent-1) 2px
+                ),
+                linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            background-size: 8px 8px, 100% 100%;
+        }
+        
+        h1 {
+            color: var(--text-dark);
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 
+                3px 3px 0px var(--border-wood),
+                6px 6px 0px rgba(0,0,0,0.3);
+            font-weight: bold;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .reading-material {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--intro-bg) 0px,
+                    #e0d0a8 1px,
+                    var(--intro-bg) 2px
+                ),
+                linear-gradient(135deg, var(--intro-bg) 0%, #c8b890 100%);
+            background-size: 100% 3px, 100% 100%;
+            padding: 30px;
+            border: 6px solid var(--intro-border);
+            border-radius: 0;
+            margin-bottom: 40px;
+            box-shadow: 
+                inset 0 2px 10px rgba(0,0,0,0.1),
+                0 4px 15px rgba(0,0,0,0.3);
+            font-size: 1.15em;
+            line-height: 1.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .reading-material h2 {
+            color: var(--border-dark);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .reading-material p {
+            margin-bottom: 18px;
+            color: var(--text-dark);
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--intro-bg) 0px,
+                    #e0d0a8 1px,
+                    var(--intro-bg) 2px
+                ),
+                linear-gradient(135deg, var(--intro-bg) 0%, #c8b890 100%);
+            background-size: 100% 3px, 100% 100%;
+            border: 5px solid var(--border-wood);
+            border-radius: 0;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 2px 10px rgba(0,0,0,0.1),
+                0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .question-container:hover {
+            border-color: var(--border-dark);
+            box-shadow: 
+                inset 0 2px 10px rgba(0,0,0,0.15),
+                0 6px 20px rgba(0,0,0,0.4);
+        }
+        
+        .question-number {
+            display: inline-block;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    var(--border-dark) 0px,
+                    var(--accent-1) 1px,
+                    var(--border-dark) 2px
+                ),
+                linear-gradient(135deg, var(--border-wood) 0%, var(--border-dark) 100%);
+            background-size: 8px 8px, 100% 100%;
+            color: var(--text-light);
+            padding: 8px 15px;
+            border: 3px solid var(--text-dark);
+            border-radius: 0;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .question-text {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--intro-bg) 0px,
+                    #d0c090 1px,
+                    var(--intro-bg) 2px
+                ),
+                linear-gradient(135deg, var(--intro-bg) 0%, var(--bg-wood-1) 100%);
+            background-size: 100% 2px, 100% 100%;
+            border: 4px solid var(--border-wood);
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .option:hover {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--intro-bg) 0px,
+                    #e0d0a8 1px,
+                    var(--intro-bg) 2px
+                ),
+                linear-gradient(135deg, var(--intro-bg) 0%, #c8b890 100%);
+            background-size: 100% 2px, 100% 100%;
+            border-color: var(--border-dark);
+            transform: translateX(5px);
+            box-shadow: 
+                inset 0 2px 5px rgba(0,0,0,0.15),
+                0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .option-label {
+            font-weight: bold;
+            color: var(--border-dark);
+            margin-right: 10px;
+            font-size: 1.2em;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border: 4px solid var(--border-wood);
+            border-radius: 0;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: none;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .feedback.correct {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    #d4e8d4 0px,
+                    #c8e0c8 1px,
+                    #d4e8d4 2px
+                ),
+                linear-gradient(135deg, #d4e8d4 0%, #c0d8c0 100%);
+            background-size: 100% 3px, 100% 100%;
+            color: #2d5a2d;
+            border-color: #6b8e6b;
+        }
+        
+        .feedback.incorrect {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    #f8e0e0 0px,
+                    #f0d0d0 1px,
+                    #f8e0e0 2px
+                ),
+                linear-gradient(135deg, #f8e0e0 0%, #f0d0d0 100%);
+            background-size: 100% 3px, 100% 100%;
+            color: #5a2d2d;
+            border-color: #8b6b6b;
+        }
+        
+        .submit-btn {
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    var(--border-dark) 0px,
+                    var(--accent-1) 1px,
+                    var(--border-dark) 2px
+                ),
+                linear-gradient(135deg, var(--border-wood) 0%, var(--border-dark) 100%);
+            background-size: 8px 8px, 100% 100%;
+            color: var(--text-light);
+            border: 4px solid var(--text-dark);
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 0;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.1),
+                0 4px 15px rgba(0,0,0,0.5);
+            width: 100%;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.2),
+                0 6px 20px rgba(0,0,0,0.7);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .score {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--border-dark);
+            margin-top: 30px;
+            padding: 20px;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--intro-bg) 0px,
+                    #e0d0a8 1px,
+                    var(--intro-bg) 2px
+                ),
+                linear-gradient(135deg, var(--intro-bg) 0%, #c8b890 100%);
+            background-size: 100% 3px, 100% 100%;
+            border: 5px solid var(--border-wood);
+            border-radius: 0;
+            box-shadow: 
+                inset 0 2px 10px rgba(0,0,0,0.1),
+                0 4px 15px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .question-text {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-buttons">
+            <a href="/quiz/{{ quiz_id }}" class="nav-btn secondary">🏠 Quiz Home</a>
+            <a href="/" class="nav-btn secondary">🏠 Main Menu</a>
+            {% if section_num > 1 %}
+            <a href="/quiz/{{ quiz_id }}/section/{{ section_num - 1 }}" class="nav-btn secondary">← Previous Section</a>
+            {% endif %}
+            {% if section_num < total_sections %}
+            <a href="/quiz/{{ quiz_id }}/section/{{ section_num + 1 }}" class="nav-btn secondary">Next Section →</a>
+            {% endif %}
+        </div>
+        
+        <h1>{{ section_title }}</h1>
+        
+        <div class="reading-material">
+            {{ reading|safe }}
+        </div>
+        
+        <form id="quizForm">
+            {% for question in questions %}
+                <div class="question-container" data-question="{{ question.number }}">
+                    <span class="question-number">Question {{ question.number }}</span>
+                    <div class="question-text">{{ question.text }}</div>
+                    <div class="options">
+                        {% for option in question.options %}
+                        <label class="option">
+                            <input type="radio" name="question_{{ question.number }}" value="{{ option.letter }}" required>
+                            <span class="option-label">{{ option.letter }}.</span>
+                            <span>{{ option.text }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <div class="feedback" id="feedback_{{ question.number }}"></div>
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="submit-btn">Check My Answers! 🎉</button>
+        </form>
+        
+        <div class="score" id="score" style="display: none;"></div>
+    </div>
+    
+    <script>
+        const quizId = '{{ quiz_id }}';
+        
+        // Load previously answered questions
+        function loadSavedAnswers() {
+            const savedAnswers = JSON.parse(localStorage.getItem(quizId + '_answers') || '{}');
+            const questions = document.querySelectorAll('.question-container');
+            
+            questions.forEach(container => {
+                const questionNum = parseInt(container.dataset.question);
+                const saved = savedAnswers[questionNum];
+                
+                if (saved) {
+                    // Mark the saved answer as checked
+                    const radio = container.querySelector(`input[value="${saved.answer}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                    }
+                    
+                    // Show feedback
+                    const feedbackDiv = document.getElementById('feedback_' + questionNum);
+                    if (saved.correct) {
+                        feedbackDiv.textContent = '✅ Correct! Great job!';
+                        feedbackDiv.className = 'feedback correct';
+                    } else {
+                        // We need to get the correct answer - fetch it
+                    fetch('/quiz/' + quizId + '/check_answer', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            question_num: questionNum,
+                            answer: saved.answer
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            feedbackDiv.textContent = `❌ Not quite! The correct answer is ${data.correct_answer}.`;
+                            feedbackDiv.className = 'feedback incorrect';
+                        });
+                    }
+                    feedbackDiv.style.display = 'block';
+                    
+                    // Disable all options
+                    container.querySelectorAll('input[type="radio"]').forEach(radio => {
+                        radio.disabled = true;
+                    });
+                }
+            });
+        }
+        
+        // Load saved answers when page loads
+        loadSavedAnswers();
+        
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const questions = document.querySelectorAll('.question-container');
+            let correctCount = 0;
+            let totalAnswered = 0;
+            
+            questions.forEach(container => {
+                const questionNum = container.dataset.question;
+                const selectedOption = container.querySelector('input[type="radio"]:checked');
+                
+                if (selectedOption) {
+                    totalAnswered++;
+                    const selectedAnswer = selectedOption.value;
+                    const feedbackDiv = document.getElementById('feedback_' + questionNum);
+                    
+                    fetch('/quiz/' + quizId + '/check_answer', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            question_num: parseInt(questionNum),
+                            answer: selectedAnswer
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.correct) {
+                            feedbackDiv.textContent = '✅ Correct! Great job!';
+                            feedbackDiv.className = 'feedback correct';
+                            correctCount++;
+                        } else {
+                            feedbackDiv.textContent = `❌ Not quite! The correct answer is ${data.correct_answer}.`;
+                            feedbackDiv.className = 'feedback incorrect';
+                        }
+                        feedbackDiv.style.display = 'block';
+                        
+                        // Save progress to localStorage
+                        let savedAnswers = JSON.parse(localStorage.getItem(quizId + '_answers') || '{}');
+                        savedAnswers[questionNum] = {
+                            answer: selectedAnswer,
+                            correct: data.correct
+                        };
+                        localStorage.setItem(quizId + '_answers', JSON.stringify(savedAnswers));
+                        
+                        // Disable all options for this question
+                        container.querySelectorAll('input[type="radio"]').forEach(radio => {
+                            radio.disabled = true;
+                        });
+                        
+                        // Update score if all questions answered
+                        if (totalAnswered === questions.length) {
+                            const scoreDiv = document.getElementById('score');
+                            const percentage = Math.round((correctCount / questions.length) * 100);
+                            scoreDiv.textContent = `🎊 You got ${correctCount} out of ${questions.length} correct! That's ${percentage}%! 🎊`;
+                            scoreDiv.style.display = 'block';
+                            scoreDiv.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    });
+                }
+            });
+            
+            if (totalAnswered < questions.length) {
+                alert('Please answer all questions before submitting!');
+            }
+        });
+    </script>
+</body>
+</html>
+

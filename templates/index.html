@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vikings Quiz - Welcome!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        {% if quiz_id == 'viking-shields' %}
+        /* Dark mahogany/chestnut wood theme for Viking Shields */
+        :root {
+            --bg-dark-1: #1a0f08;
+            --bg-dark-2: #241510;
+            --bg-wood-1: #6b4423;
+            --bg-wood-2: #5c3820;
+            --bg-wood-3: #4d2e1a;
+            --border-wood: #3d2415;
+            --border-dark: #2d1a0f;
+            --text-dark: #2d1a0f;
+            --text-light: #d4a574;
+            --accent-1: #7b5433;
+            --accent-2: #6b4423;
+            --intro-bg: #c9a068;
+            --intro-border: #4d2e1a;
+        }
+        {% else %}
+        /* Lighter wood theme for Vikings */
+        :root {
+            --bg-dark-1: #3d2817;
+            --bg-dark-2: #4a2f1a;
+            --bg-wood-1: #d4a574;
+            --bg-wood-2: #c9a068;
+            --bg-wood-3: #b8956a;
+            --border-wood: #8b5a3c;
+            --border-dark: #6b4423;
+            --text-dark: #3d2817;
+            --text-light: #f4e4bc;
+            --accent-1: #8b5a3c;
+            --accent-2: #6b4423;
+            --intro-bg: #f4e4bc;
+            --intro-border: #8b5a3c;
+        }
+        {% endif %}
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    var(--bg-dark-1) 0px,
+                    var(--bg-dark-2) 2px,
+                    var(--bg-dark-1) 4px,
+                    var(--bg-dark-2) 6px
+                ),
+                linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
+            background-size: 8px 100%, 100% 100%;
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--bg-wood-1) 0px,
+                    var(--bg-wood-2) 1px,
+                    var(--bg-wood-1) 2px,
+                    var(--bg-wood-2) 3px,
+                    var(--bg-wood-1) 4px
+                ),
+                linear-gradient(135deg, var(--bg-wood-1) 0%, var(--bg-wood-3) 100%);
+            background-size: 100% 4px, 100% 100%;
+            border: 8px solid var(--border-wood);
+            border-radius: 0;
+            padding: 40px;
+            box-shadow: 
+                0 0 0 4px var(--border-dark),
+                0 0 0 8px var(--border-wood),
+                0 20px 60px rgba(0,0,0,0.8),
+                inset 0 2px 10px rgba(255,255,255,0.1);
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    rgba(139, 90, 60, 0.1) 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+        }
+        
+        h1 {
+            color: var(--text-dark);
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 
+                3px 3px 0px var(--border-wood),
+                6px 6px 0px rgba(0,0,0,0.3);
+            font-weight: bold;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--border-dark);
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        .intro {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--intro-bg) 0px,
+                    #e0d0a8 1px,
+                    var(--intro-bg) 2px
+                ),
+                linear-gradient(135deg, var(--intro-bg) 0%, #c8b890 100%);
+            background-size: 100% 3px, 100% 100%;
+            padding: 30px;
+            border: 6px solid var(--intro-border);
+            border-radius: 0;
+            margin-bottom: 40px;
+            box-shadow: 
+                inset 0 2px 10px rgba(0,0,0,0.1),
+                0 4px 15px rgba(0,0,0,0.3);
+            font-size: 1.2em;
+            line-height: 1.9;
+            position: relative;
+        }
+        
+        .intro::before {
+            content: '{% if quiz_id == "viking-shields" %}🛡️{% else %}⚔️{% endif %}';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--bg-wood-1);
+            padding: 5px 15px;
+            border: 3px solid var(--border-wood);
+            font-size: 1.5em;
+        }
+        
+        .intro h2 {
+            color: var(--border-dark);
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .intro p {
+            margin-bottom: 18px;
+            color: var(--text-dark);
+        }
+        
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .section-card {
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    var(--accent-1) 0px,
+                    var(--accent-2) 1px,
+                    var(--accent-1) 2px
+                ),
+                linear-gradient(135deg, var(--accent-1) 0%, var(--border-dark) 100%);
+            background-size: 8px 8px, 100% 100%;
+            color: var(--text-light);
+            padding: 25px;
+            border: 5px solid var(--text-dark);
+            border-radius: 0;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.1),
+                0 4px 15px rgba(0,0,0,0.5),
+                0 0 0 2px var(--bg-dark-1);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 2px solid rgba(255,255,255,0.1);
+            pointer-events: none;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.2),
+                0 8px 25px rgba(0,0,0,0.7),
+                0 0 0 2px var(--bg-dark-1);
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    var(--accent-2) 0px,
+                    var(--accent-1) 1px,
+                    var(--accent-2) 2px
+                ),
+                linear-gradient(135deg, var(--accent-2) 0%, var(--accent-1) 100%);
+            background-size: 8px 8px, 100% 100%;
+        }
+        
+        .section-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-card p {
+            font-size: 1em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-number {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        .progress-bar {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--intro-bg) 0px,
+                    #d0c090 1px,
+                    var(--intro-bg) 2px
+                ),
+                linear-gradient(135deg, var(--intro-bg) 0%, var(--bg-wood-1) 100%);
+            background-size: 100% 3px, 100% 100%;
+            border: 6px solid var(--border-wood);
+            border-radius: 0;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 
+                inset 0 2px 10px rgba(0,0,0,0.1),
+                0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .progress-bar h3 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .progress-stat {
+            text-align: center;
+        }
+        
+        .progress-stat .number {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--border-dark);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        .progress-stat .label {
+            font-size: 0.9em;
+            color: var(--text-dark);
+            font-weight: bold;
+        }
+        
+        .progress-visual {
+            width: 100%;
+            height: 30px;
+            background: var(--border-wood);
+            border: 3px solid var(--text-dark);
+            border-radius: 0;
+            overflow: hidden;
+            margin-top: 10px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    var(--border-dark) 0px,
+                    var(--accent-1) 2px,
+                    var(--border-dark) 4px
+                ),
+                linear-gradient(135deg, var(--border-wood) 0%, var(--border-dark) 100%);
+            background-size: 8px 100%, 100% 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .results-btn {
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    var(--border-dark) 0px,
+                    var(--accent-1) 1px,
+                    var(--border-dark) 2px
+                ),
+                linear-gradient(135deg, var(--border-wood) 0%, var(--border-dark) 100%);
+            background-size: 8px 8px, 100% 100%;
+            color: var(--text-light);
+            padding: 15px 30px;
+            border: 4px solid var(--text-dark);
+            border-radius: 0;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.1),
+                0 4px 15px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .results-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.2),
+                0 6px 20px rgba(0,0,0,0.7);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .sections-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <a href="/" style="display: inline-block; background: linear-gradient(135deg, #6b4423 0%, #7b5433 100%); color: #f4e4bc; padding: 10px 20px; border: 3px solid #5a3a1f; text-decoration: none; font-weight: bold; border-radius: 0; box-shadow: inset 0 2px 5px rgba(255,255,255,0.1), 0 4px 15px rgba(0,0,0,0.5);">← Back to Home</a>
+        </div>
+        
+        <h1>🏰 {{ quiz.title }}! 🏰</h1>
+        <p class="subtitle">Learn About {{ quiz.name }} Through Fun Questions!</p>
+        
+        <div class="intro">
+            <h2>Welcome, Young Explorer! ⚔️</h2>
+            <p>
+                <strong>Who were the Vikings?</strong> The Vikings were brave explorers, skilled sailors, and fierce warriors who lived about 1,000 years ago! They came from Scandinavia (places like Norway, Sweden, and Denmark) and traveled far and wide in their amazing longships.
+            </p>
+            <p>
+                <strong>What made them special?</strong> Vikings were farmers, traders, and adventurers. They built strong communities, created beautiful art, and told exciting stories about their gods like Thor and Odin. They even reached North America before Christopher Columbus!
+            </p>
+            <p>
+                <strong>How to use this quiz:</strong> Click on any section below to start learning! Each section has fun reading material to help you understand the topic, followed by questions to test your knowledge. Read carefully and have fun! 🎯
+            </p>
+        </div>
+        
+        <div class="progress-bar">
+            <h3>📊 Your Progress</h3>
+            <div class="progress-info">
+                <div class="progress-stat">
+                    <div class="number" id="answered-count">0</div>
+                    <div class="label">Answered</div>
+                </div>
+                <div class="progress-stat">
+                    <div class="number" id="correct-count">0</div>
+                    <div class="label">Correct</div>
+                </div>
+                <div class="progress-stat">
+                    <div class="number" id="completion-percent">0%</div>
+                    <div class="label">Complete</div>
+                </div>
+            </div>
+            <div class="progress-visual">
+                <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
+            </div>
+            <div style="text-align: center;">
+                <a href="/quiz/{{ quiz_id }}/results" class="results-btn">View Final Results 🏆</a>
+            </div>
+        </div>
+        
+        <div class="sections-grid">
+            {% for section_num, section in quiz.sections.items() %}
+            <a href="/quiz/{{ quiz_id }}/section/{{ section_num }}" class="section-card">
+                <div class="section-number">{{ section_num }}️⃣</div>
+                <h3>{{ section.title }}</h3>
+                <p>{{ section.questions|length }} questions</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <script>
+        const quizId = '{{ quiz_id }}';
+        
+        // Load progress from localStorage
+        function loadProgress() {
+            const savedAnswers = localStorage.getItem(quizId + '_answers');
+            if (!savedAnswers) {
+                return;
+            }
+            
+            const answers = JSON.parse(savedAnswers);
+            const totalQuestions = {{ quiz.total_questions }};
+            const answered = Object.keys(answers).length;
+            const correct = Object.values(answers).filter(a => a.correct).length;
+            const completion = Math.round((answered / totalQuestions) * 100);
+            
+            document.getElementById('answered-count').textContent = answered;
+            document.getElementById('correct-count').textContent = correct;
+            document.getElementById('completion-percent').textContent = completion + '%';
+            document.getElementById('progress-fill').style.width = completion + '%';
+            document.getElementById('progress-fill').textContent = completion + '%';
+        }
+        
+        // Update progress when page loads
+        loadProgress();
+        
+        // Listen for storage events to update when other tabs update progress
+        window.addEventListener('storage', loadProgress);
+    </script>
+</body>
+</html>
