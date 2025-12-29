@@ -1,15 +1,17 @@
-# Vikings Q&A App for Kids
+# Kids Q&A App
 
-A fun, interactive web application to help kids learn about Vikings through multiple-choice questions!
+A fun, interactive web application to help kids learn through multiple-choice quizzes on various subjects!
 
 ## Features
 
 - 🎨 Kid-friendly, colorful interface
-- 📚 30 questions organized into 5 separate sections (each on its own page)
+- 📚 Multiple quizzes on different subjects with questions organized into sections
 - 📖 Expanded reading material for each section to help kids learn
 - ✅ Instant feedback on answers
-- 🎯 Score tracking per section
+- 🎯 Progress tracking and score calculation
+- 🏆 Graded results (Fail, Pass, Very Good, Excellent)
 - 🔄 Easy navigation between sections
+- 📊 Difficulty levels: Easy, Medium, and Hard
 - 🌐 Accessible from any device on your local network
 
 ## Setup Instructions
@@ -41,21 +43,25 @@ A fun, interactive web application to help kids learn about Vikings through mult
 
 ## Files
 
-- `app.py` - The main Flask application
-- `qa.md` - The quiz questions and answers (reference)
-- `templates/index.html` - The home page with section navigation
-- `templates/section.html` - The section page template (used for all 5 sections)
+- `app.py` - The main Flask application with all quiz data
+- `qa.md` - Reference file with original quiz questions
+- `templates/home.html` - The main menu page showing all available quizzes
+- `templates/index.html` - The quiz home page showing sections
+- `templates/section.html` - The section page template with reading material and questions
+- `templates/results.html` - The results page showing final scores and grades
 - `requirements.txt` - Python dependencies
 
 ## How It Works
 
-1. Start at the **home page** - choose which section to explore
-2. Each **section page** has:
+1. Start at the **home page** - browse quizzes organized by difficulty (Easy, Medium, Hard)
+2. Select a quiz to begin
+3. Each quiz is divided into **sections** with:
    - Expanded reading material about that topic
    - Questions related to that section
    - Navigation to move between sections
-3. Answer questions and get instant feedback
-4. See your score at the end of each section
+4. Answer questions and get instant feedback
+5. Track your progress as you complete sections
+6. View your final results with a grade at the end
 
 ## Troubleshooting
 
