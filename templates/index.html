@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vikings Quiz - Welcome!</title>
+    <title>{{ quiz.title }} - Welcome!</title>
     <style>
         * {
             margin: 0;
@@ -28,6 +28,40 @@
             --intro-bg: #c9a068;
             --intro-border: #4d2e1a;
         }
+        {% elif 'ancient-egypt' in quiz_id %}
+        /* Egyptian theme - Gold and pyramid colors */
+        :root {
+            --bg-dark-1: #1a1208;
+            --bg-dark-2: #2d1f0f;
+            --bg-wood-1: #d4af37;
+            --bg-wood-2: #c9a030;
+            --bg-wood-3: #b8952a;
+            --border-wood: #8b6914;
+            --border-dark: #6b4f0f;
+            --text-dark: #3d2817;
+            --text-light: #f4e4bc;
+            --accent-1: #ffd700;
+            --accent-2: #daa520;
+            --intro-bg: #f4e4bc;
+            --intro-border: #8b6914;
+        }
+        {% elif 'baghdad' in quiz_id %}
+        /* Islamic theme - Geometric patterns and traditional colors */
+        :root {
+            --bg-dark-1: #0d1b2a;
+            --bg-dark-2: #1b263b;
+            --bg-wood-1: #1e3a5f;
+            --bg-wood-2: #2d4a6b;
+            --bg-wood-3: #3d5a7b;
+            --border-wood: #4a6fa5;
+            --border-dark: #1b263b;
+            --text-dark: #0d1b2a;
+            --text-light: #e0e7ff;
+            --accent-1: #3b82f6;
+            --accent-2: #2563eb;
+            --intro-bg: #e0e7ff;
+            --intro-border: #4a6fa5;
+        }
         {% else %}
         /* Lighter wood theme for Vikings */
         :root {
@@ -49,6 +83,31 @@
         
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
+            {% if 'ancient-egypt' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    var(--bg-dark-1) 0px,
+                    var(--bg-dark-2) 2px,
+                    var(--bg-dark-1) 4px,
+                    var(--bg-dark-2) 6px
+                ),
+                linear-gradient(135deg, #2d1f0f 0%, #1a1208 50%, #3d2817 100%);
+            background-size: 8px 100%, 100% 100%;
+            position: relative;
+            {% elif 'baghdad' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    var(--bg-dark-1) 0px,
+                    var(--bg-dark-2) 2px,
+                    var(--bg-dark-1) 4px,
+                    var(--bg-dark-2) 6px
+                ),
+                linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #2d4a6b 100%);
+            background-size: 8px 100%, 100% 100%;
+            position: relative;
+            {% else %}
             background: 
                 repeating-linear-gradient(
                     90deg,
@@ -59,14 +118,106 @@
                 ),
                 linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
             background-size: 8px 100%, 100% 100%;
+            {% endif %}
             min-height: 100vh;
             padding: 20px;
             color: var(--text-dark);
         }
         
+        {% if 'ancient-egypt' in quiz_id %}
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        {% elif 'baghdad' in quiz_id %}
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent 0px,
+                    rgba(59, 130, 246, 0.05) 1px,
+                    transparent 2px,
+                    rgba(37, 99, 235, 0.05) 3px,
+                    transparent 4px
+                ),
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        {% endif %}
+        
         .container {
             max-width: 900px;
             margin: 0 auto;
+            {% if 'ancient-egypt' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--bg-wood-1) 0px,
+                    var(--bg-wood-2) 1px,
+                    var(--bg-wood-1) 2px,
+                    var(--bg-wood-2) 3px,
+                    var(--bg-wood-1) 4px
+                ),
+                linear-gradient(135deg, #ffd700 0%, #daa520 50%, #b8952a 100%);
+            background-size: 100% 4px, 100% 100%;
+            border: 8px solid var(--border-wood);
+            border-radius: 0;
+            padding: 40px;
+            box-shadow: 
+                0 0 0 4px var(--border-dark),
+                0 0 0 8px var(--border-wood),
+                0 20px 60px rgba(0,0,0,0.8),
+                inset 0 2px 10px rgba(255,255,255,0.2),
+                0 0 30px rgba(255, 215, 0, 0.3);
+            position: relative;
+            clip-path: polygon(0% 0%, 100% 0%, 95% 100%, 5% 100%);
+            {% elif 'baghdad' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--bg-wood-1) 0px,
+                    var(--bg-wood-2) 1px,
+                    var(--bg-wood-1) 2px,
+                    var(--bg-wood-2) 3px,
+                    var(--bg-wood-1) 4px
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent 0px,
+                    rgba(59, 130, 246, 0.1) 1px,
+                    transparent 2px,
+                    rgba(37, 99, 235, 0.1) 3px,
+                    transparent 4px
+                ),
+                linear-gradient(135deg, #1e3a5f 0%, #2d4a6b 50%, #3d5a7b 100%);
+            background-size: 100% 4px, 20px 20px, 100% 100%;
+            border: 8px solid var(--border-wood);
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 
+                0 0 0 4px var(--border-dark),
+                0 0 0 8px var(--border-wood),
+                0 20px 60px rgba(0,0,0,0.8),
+                inset 0 2px 10px rgba(255,255,255,0.1),
+                0 0 30px rgba(59, 130, 246, 0.3);
+            position: relative;
+            {% else %}
             background: 
                 repeating-linear-gradient(
                     0deg,
@@ -87,6 +238,7 @@
                 0 20px 60px rgba(0,0,0,0.8),
                 inset 0 2px 10px rgba(255,255,255,0.1);
             position: relative;
+            {% endif %}
         }
         
         .container::before {
@@ -96,6 +248,35 @@
             left: 0;
             right: 0;
             bottom: 0;
+            {% if 'ancient-egypt' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    rgba(255, 215, 0, 0.15) 1px,
+                    transparent 2px
+                ),
+                linear-gradient(180deg, 
+                    rgba(255, 215, 0, 0.1) 0%,
+                    transparent 20%,
+                    transparent 80%,
+                    rgba(255, 215, 0, 0.1) 100%
+                );
+            {% elif 'baghdad' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    rgba(59, 130, 246, 0.2) 1px,
+                    transparent 2px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent 0px,
+                    rgba(37, 99, 235, 0.15) 1px,
+                    transparent 2px
+                );
+            {% else %}
             background: 
                 repeating-linear-gradient(
                     90deg,
@@ -103,17 +284,67 @@
                     rgba(139, 90, 60, 0.1) 1px,
                     transparent 2px
                 );
+            {% endif %}
             pointer-events: none;
         }
+        
+        {% if 'ancient-egypt' in quiz_id %}
+        .container::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 30px solid var(--bg-wood-1);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            z-index: 2;
+        }
+        {% elif 'baghdad' in quiz_id %}
+        .container::after {
+            content: '✦';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            color: var(--accent-1);
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+            z-index: 2;
+        }
+        {% endif %}
         
         h1 {
             color: var(--text-dark);
             text-align: center;
             font-size: 3em;
             margin-bottom: 10px;
+            {% if 'ancient-egypt' in quiz_id %}
+            text-shadow: 
+                3px 3px 0px var(--border-wood),
+                6px 6px 0px rgba(0,0,0,0.3),
+                0 0 20px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, #ffd700 0%, #daa520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            {% elif 'baghdad' in quiz_id %}
+            text-shadow: 
+                3px 3px 0px var(--border-wood),
+                6px 6px 0px rgba(0,0,0,0.3),
+                0 0 20px rgba(59, 130, 246, 0.5);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1e40af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            {% else %}
             text-shadow: 
                 3px 3px 0px var(--border-wood),
                 6px 6px 0px rgba(0,0,0,0.3);
+            {% endif %}
             font-weight: bold;
             letter-spacing: 2px;
             position: relative;
@@ -130,6 +361,34 @@
         }
         
         .intro {
+            {% if 'baghdad' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--intro-bg) 0px,
+                    #c8d5ff 1px,
+                    var(--intro-bg) 2px
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent 0px,
+                    rgba(59, 130, 246, 0.05) 1px,
+                    transparent 2px
+                ),
+                linear-gradient(135deg, var(--intro-bg) 0%, #c8d5ff 100%);
+            background-size: 100% 3px, 20px 20px, 100% 100%;
+            padding: 30px;
+            border: 6px solid var(--intro-border);
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 
+                inset 0 2px 10px rgba(0,0,0,0.1),
+                0 4px 15px rgba(0,0,0,0.3),
+                0 0 20px rgba(59, 130, 246, 0.2);
+            font-size: 1.2em;
+            line-height: 1.9;
+            position: relative;
+            {% else %}
             background: 
                 repeating-linear-gradient(
                     0deg,
@@ -149,10 +408,11 @@
             font-size: 1.2em;
             line-height: 1.9;
             position: relative;
+            {% endif %}
         }
         
         .intro::before {
-            content: '{% if quiz_id == "viking-shields" %}🛡️{% else %}⚔️{% endif %}';
+            content: '{{ quiz.emoji }}';
             position: absolute;
             top: -15px;
             left: 20px;
@@ -182,6 +442,62 @@
         }
         
         .section-card {
+            {% if 'ancient-egypt' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    #ffd700 0px,
+                    #daa520 1px,
+                    #ffd700 2px
+                ),
+                linear-gradient(135deg, #ffd700 0%, #daa520 50%, #b8952a 100%);
+            background-size: 8px 8px, 100% 100%;
+            color: var(--text-dark);
+            padding: 25px;
+            border: 5px solid var(--border-wood);
+            border-radius: 0;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.3),
+                0 4px 15px rgba(0,0,0,0.5),
+                0 0 0 2px var(--bg-dark-1),
+                0 0 20px rgba(255, 215, 0, 0.4);
+            cursor: pointer;
+            position: relative;
+            clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+            {% elif 'baghdad' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    var(--accent-1) 0px,
+                    var(--accent-2) 1px,
+                    var(--accent-1) 2px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent 0px,
+                    rgba(224, 231, 255, 0.1) 1px,
+                    transparent 2px
+                ),
+                linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1e40af 100%);
+            background-size: 8px 8px, 10px 10px, 100% 100%;
+            color: var(--text-light);
+            padding: 25px;
+            border: 5px solid var(--border-wood);
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.2),
+                0 4px 15px rgba(0,0,0,0.5),
+                0 0 0 2px var(--bg-dark-1),
+                0 0 20px rgba(59, 130, 246, 0.4);
+            cursor: pointer;
+            position: relative;
+            {% else %}
             background: 
                 repeating-linear-gradient(
                     45deg,
@@ -204,6 +520,7 @@
                 0 0 0 2px var(--bg-dark-1);
             cursor: pointer;
             position: relative;
+            {% endif %}
         }
         
         .section-card::before {
@@ -219,6 +536,43 @@
         
         .section-card:hover {
             transform: translateY(-5px);
+            {% if 'ancient-egypt' in quiz_id %}
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.4),
+                0 8px 25px rgba(0,0,0,0.7),
+                0 0 0 2px var(--bg-dark-1),
+                0 0 30px rgba(255, 215, 0, 0.6);
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    #ffed4e 0px,
+                    #ffd700 1px,
+                    #ffed4e 2px
+                ),
+                linear-gradient(135deg, #ffed4e 0%, #ffd700 50%, #daa520 100%);
+            background-size: 8px 8px, 100% 100%;
+            {% elif 'baghdad' in quiz_id %}
+            box-shadow: 
+                inset 0 2px 5px rgba(255,255,255,0.3),
+                0 8px 25px rgba(0,0,0,0.7),
+                0 0 0 2px var(--bg-dark-1),
+                0 0 30px rgba(59, 130, 246, 0.6);
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    #60a5fa 0px,
+                    #3b82f6 1px,
+                    #60a5fa 2px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent 0px,
+                    rgba(224, 231, 255, 0.15) 1px,
+                    transparent 2px
+                ),
+                linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+            background-size: 8px 8px, 10px 10px, 100% 100%;
+            {% else %}
             box-shadow: 
                 inset 0 2px 5px rgba(255,255,255,0.2),
                 0 8px 25px rgba(0,0,0,0.7),
@@ -232,6 +586,7 @@
                 ),
                 linear-gradient(135deg, var(--accent-2) 0%, var(--accent-1) 100%);
             background-size: 8px 8px, 100% 100%;
+            {% endif %}
         }
         
         .section-card h3 {
@@ -256,6 +611,32 @@
         }
         
         .progress-bar {
+            {% if 'baghdad' in quiz_id %}
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--intro-bg) 0px,
+                    #c8d5ff 1px,
+                    var(--intro-bg) 2px
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent 0px,
+                    rgba(59, 130, 246, 0.05) 1px,
+                    transparent 2px
+                ),
+                linear-gradient(135deg, var(--intro-bg) 0%, var(--bg-wood-1) 100%);
+            background-size: 100% 3px, 20px 20px, 100% 100%;
+            border: 6px solid var(--border-wood);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 
+                inset 0 2px 10px rgba(0,0,0,0.1),
+                0 4px 15px rgba(0,0,0,0.3),
+                0 0 20px rgba(59, 130, 246, 0.2);
+            {% else %}
             background: 
                 repeating-linear-gradient(
                     0deg,
@@ -273,6 +654,7 @@
             box-shadow: 
                 inset 0 2px 10px rgba(0,0,0,0.1),
                 0 4px 15px rgba(0,0,0,0.3);
+            {% endif %}
         }
         
         .progress-bar h3 {
@@ -388,15 +770,17 @@
 </head>
 <body>
     <div class="container">
-        <div style="text-align: center; margin-bottom: 20px;">
+        <div style="text-align: center; margin-bottom: 20px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
             <a href="/" style="display: inline-block; background: linear-gradient(135deg, #6b4423 0%, #7b5433 100%); color: #f4e4bc; padding: 10px 20px; border: 3px solid #5a3a1f; text-decoration: none; font-weight: bold; border-radius: 0; box-shadow: inset 0 2px 5px rgba(255,255,255,0.1), 0 4px 15px rgba(0,0,0,0.5);">← Back to Home</a>
+            <a href="/progress" style="display: inline-block; background: linear-gradient(135deg, #6b4423 0%, #7b5433 100%); color: #f4e4bc; padding: 10px 20px; border: 3px solid #5a3a1f; text-decoration: none; font-weight: bold; border-radius: 0; box-shadow: inset 0 2px 5px rgba(255,255,255,0.1), 0 4px 15px rgba(0,0,0,0.5);">📊 My Progress</a>
         </div>
         
-        <h1>🏰 {{ quiz.title }}! 🏰</h1>
+        <h1>{{ quiz.emoji }} {{ quiz.title }}! {{ quiz.emoji }}</h1>
         <p class="subtitle">Learn About {{ quiz.name }} Through Fun Questions!</p>
         
         <div class="intro">
-            <h2>Welcome, Young Explorer! ⚔️</h2>
+            <h2>Welcome, Young Explorer! {{ quiz.emoji }}</h2>
+            {% if quiz_id == 'vikings' %}
             <p>
                 <strong>Who were the Vikings?</strong> The Vikings were brave explorers, skilled sailors, and fierce warriors who lived about 1,000 years ago! They came from Scandinavia (places like Norway, Sweden, and Denmark) and traveled far and wide in their amazing longships.
             </p>
@@ -406,6 +790,84 @@
             <p>
                 <strong>How to use this quiz:</strong> Click on any section below to start learning! Each section has fun reading material to help you understand the topic, followed by questions to test your knowledge. Read carefully and have fun! 🎯
             </p>
+            {% elif quiz_id == 'viking-shields' %}
+            <p>
+                <strong>What are Viking Shields?</strong> Viking shields were essential pieces of equipment for every warrior! These round, wooden shields were not just for protection - they were works of art, decorated with bright colors and patterns. Each shield was unique and told a story about its owner.
+            </p>
+            <p>
+                <strong>Why were they important?</strong> Shields were the main protection for Viking warriors in battle. They were made from strong wood, had a metal boss in the center, and could be used both defensively and offensively. Vikings even used them in a famous battle formation called the "Shield Wall"!
+            </p>
+            <p>
+                <strong>How to use this quiz:</strong> Click on any section below to start learning! Each section has fun reading material to help you understand the topic, followed by questions to test your knowledge. Read carefully and have fun! 🎯
+            </p>
+            {% elif quiz_id == 'vikings-medium' %}
+            <p>
+                <strong>Dive Deeper into Viking History!</strong> You're ready to learn more advanced topics about the Vikings! This quiz explores Viking society, government, trade routes, and navigation techniques. You'll discover how Vikings organized their communities and how they became such successful explorers.
+            </p>
+            <p>
+                <strong>What you'll learn:</strong> Discover how Vikings governed themselves through assemblies called "Things," learn about the Varangian trade route, explore Viking navigation methods, and understand their rich culture and art. This is for students who want to go beyond the basics!
+            </p>
+            <p>
+                <strong>How to use this quiz:</strong> Click on any section below to start learning! Each section has detailed reading material to help you understand the topic, followed by questions to test your knowledge. Read carefully and have fun! 🎯
+            </p>
+            {% elif quiz_id == 'vikings-religion-hard' %}
+            <p>
+                <strong>Explore Norse Mythology!</strong> Welcome to the complex and fascinating world of Viking religion! This advanced quiz covers the Nine Worlds, the gods and goddesses of Asgard, the prophecy of Ragnarok, and the religious practices of the Vikings.
+            </p>
+            <p>
+                <strong>What makes this challenging?</strong> You'll learn about Yggdrasil (the World Tree), the relationships between gods like Odin, Thor, and Loki, the end of the world prophecy, and how Vikings practiced their religion. This requires careful reading and deep understanding!
+            </p>
+            <p>
+                <strong>How to use this quiz:</strong> Click on any section below to start learning! Each section has detailed reading material to help you understand the topic, followed by challenging questions. Read very carefully and think deeply! 🎯
+            </p>
+            {% elif quiz_id == 'viking-queen-journal' %}
+            <p>
+                <strong>Read Queen Astrid's Journal!</strong> You're about to step into the world of a Viking queen! This quiz is unique - you'll read entries from Queen Astrid's personal journal and use inference skills to answer challenging questions about Viking life, society, and culture.
+            </p>
+            <p>
+                <strong>What makes this special?</strong> Instead of reading facts, you'll read a first-person account from a Viking queen. You'll need to read between the lines, make connections, and use critical thinking to answer questions about daily life, trade, social structure, and beliefs.
+            </p>
+            <p>
+                <strong>How to use this quiz:</strong> Start with Part 1 and read Queen Astrid's journal entry carefully. Then use what you learned to answer the questions. The journal contains clues you'll need for later sections too! Read thoughtfully and use your inference skills! 🎯
+            </p>
+            {% elif quiz_id == 'ancient-egypt' %}
+            <p>
+                <strong>What is Ancient Egypt?</strong> Ancient Egypt was one of the most amazing civilizations in history! It existed for over 3,000 years, starting around 3,100 BC. The Ancient Egyptians built incredible pyramids, created beautiful art, and developed a system of writing called hieroglyphics.
+            </p>
+            <p>
+                <strong>What made them special?</strong> The Ancient Egyptians lived along the Nile River, which was like a lifeline for their civilization. They had powerful pharaohs who ruled as both kings and gods, built massive pyramids as tombs, and created mummies to preserve bodies for the afterlife. They also believed in many gods and goddesses!
+            </p>
+            <p>
+                <strong>How to use this quiz:</strong> Click on any section below to start learning! Each section has fun reading material to help you understand the topic, followed by questions to test your knowledge. Read carefully and have fun! 🎯
+            </p>
+            {% elif quiz_id == 'ancient-egypt-medium' %}
+            <p>
+                <strong>Explore Deeper into Ancient Egypt!</strong> You're ready to learn more advanced topics about Ancient Egypt! This quiz explores specific pharaohs, dynasties, architecture, religion, writing systems, and daily life. You'll discover the details that made Ancient Egypt so remarkable.
+            </p>
+            <p>
+                <strong>What you'll learn:</strong> Discover famous pharaohs like Menes, Hatshepsut, and Tutankhamun. Learn about the Old, Middle, and New Kingdoms. Explore the Book of the Dead, hieratic script, the Rosetta Stone, and the sophisticated society of Ancient Egypt. This is for students who want to go beyond the basics!
+            </p>
+            <p>
+                <strong>How to use this quiz:</strong> Click on any section below to start learning! Each section has detailed reading material to help you understand the topic, followed by questions to test your knowledge. Read carefully and have fun! 🎯
+            </p>
+            {% elif quiz_id == 'baghdad-abbasid' %}
+            <p>
+                <strong>Discover Baghdad and the Abbasid Empire!</strong> Welcome to the amazing city of Baghdad during the Golden Age of Islam! Baghdad was one of the greatest cities in the world, known for its incredible architecture, the House of Wisdom (a famous library and learning center), and its role as a center of trade and knowledge.
+            </p>
+            <p>
+                <strong>What made Baghdad special?</strong> Founded in 762 AD, Baghdad was a planned city with amazing architecture, including the famous Round City. It was home to the House of Wisdom, where scholars from different cultures worked together. The city was a hub of trade, connecting East and West, and a center for science, mathematics, and learning.
+            </p>
+            <p>
+                <strong>How to use this quiz:</strong> Click on any section below to start learning! Each section has detailed reading material to help you understand the topic, followed by questions to test your knowledge. Read carefully and have fun! 🎯
+            </p>
+            {% else %}
+            <p>
+                <strong>About this quiz:</strong> {{ quiz.description }}
+            </p>
+            <p>
+                <strong>How to use this quiz:</strong> Click on any section below to start learning! Each section has fun reading material to help you understand the topic, followed by questions to test your knowledge. Read carefully and have fun! 🎯
+            </p>
+            {% endif %}
         </div>
         
         <div class="progress-bar">

@@ -449,6 +449,7 @@
         <div class="nav-buttons">
             <a href="/quiz/{{ quiz_id }}" class="nav-btn secondary">🏠 Quiz Home</a>
             <a href="/" class="nav-btn secondary">🏠 Main Menu</a>
+            <a href="/progress" class="nav-btn secondary">📊 My Progress</a>
             {% if section_num > 1 %}
             <a href="/quiz/{{ quiz_id }}/section/{{ section_num - 1 }}" class="nav-btn secondary">← Previous Section</a>
             {% endif %}
@@ -459,9 +460,11 @@
         
         <h1>{{ section_title }}</h1>
         
+        {% if reading %}
         <div class="reading-material">
             {{ reading|safe }}
         </div>
+        {% endif %}
         
         <form id="quizForm">
             {% for question in questions %}

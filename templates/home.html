@@ -96,6 +96,11 @@
             color: white;
         }
         
+        .difficulty-badge.reward {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 50%, #d63031 100%);
+            color: white;
+        }
+        
         .quizzes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -314,6 +319,11 @@
             <p>Learn and have fun with interactive quizzes!</p>
         </div>
         
+        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap;">
+            <a href="/" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.1); color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2);">🏠 Main Menu</a>
+            <a href="/progress" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.1); color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2);">📊 My Progress</a>
+        </div>
+        
         <!-- Easy Difficulty Section -->
         <div class="difficulty-section">
             <div class="difficulty-header">
@@ -411,6 +421,40 @@
                 {% else %}
                     <div class="empty-section">
                         No hard quizzes available yet. Check back soon!
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Reward Quizzes Section -->
+        <div class="difficulty-section">
+            <div class="difficulty-header">
+                <h2>Reward Quizzes</h2>
+                <span class="difficulty-badge reward">No Supporting Text</span>
+            </div>
+            <div class="quizzes-grid">
+                {% if quizzes_by_difficulty.reward %}
+                    {% for quiz_id, quiz in quizzes_by_difficulty.reward.items() %}
+                    <a href="/quiz/{{ quiz_id }}" class="quiz-card">
+                        <span class="quiz-emoji">{{ quiz.emoji }}</span>
+                        <h2>{{ quiz.name }}</h2>
+                        <p>{{ quiz.description }}</p>
+                        <div class="quiz-stats">
+                            <div class="stat">
+                                <div class="stat-number">{{ quiz.total_questions }}</div>
+                                <div class="stat-label">Questions</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">{{ quiz.sections|length }}</div>
+                                <div class="stat-label">Sections</div>
+                            </div>
+                        </div>
+                        <div class="start-btn">Start Quiz</div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-section">
+                        No reward quizzes available yet. Check back soon!
                     </div>
                 {% endif %}
             </div>
