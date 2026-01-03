@@ -73,6 +73,30 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
         
+        .reset-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(214, 48, 49, 0.2);
+            color: #ff6b6b;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(214, 48, 49, 0.4);
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .reset-button:hover {
+            background: rgba(214, 48, 49, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(214, 48, 49, 0.3);
+            border-color: rgba(214, 48, 49, 0.6);
+        }
+        
         .progress-table {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
@@ -166,6 +190,10 @@
             <a href="/progress" class="nav-link">📊 My Progress</a>
         </div>
         
+        <div style="text-align: center; margin-bottom: 30px;">
+            <button onclick="resetAllQuizzes()" class="reset-button">🔄 Reset All Quizzes</button>
+        </div>
+        
         <div class="progress-table">
             <table>
                 <thead>
@@ -235,6 +263,22 @@
             });
             
             tableBody.innerHTML = rowsHTML;
+        }
+        
+        // Reset all quiz progress
+        function resetAllQuizzes() {
+            if (confirm('Are you sure you want to reset ALL quiz progress? This will clear all your answers and cannot be undone.')) {
+                // Clear all quiz progress from localStorage
+                Object.keys(quizzes).forEach(quizId => {
+                    localStorage.removeItem(quizId + '_answers');
+                });
+                
+                // Reload the progress table
+                loadAllProgress();
+                
+                // Show confirmation message
+                alert('All quiz progress has been reset!');
+            }
         }
         
         // Load all progress when page loads
